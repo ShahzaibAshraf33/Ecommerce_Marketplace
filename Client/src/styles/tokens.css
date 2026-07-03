@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --color-primary-start: #6D28D9;
+  --color-primary-mid: #A855F7;
+  --color-primary-end: #DB2777;
+  --color-brand: #7C3AED;
+  --color-icon-purple-bg: #EDE9FE;
+  --color-icon-purple-fg: #7C3AED;
+  --color-icon-blue-bg: #DBEAFE;
+  --color-icon-blue-fg: #2563EB;
+  --color-icon-pink-bg: #FCE7F3;
+  --color-icon-pink-fg: #DB2777;
+  --color-icon-orange-bg: #FFEDD5;
+  --color-icon-orange-fg: #F97316;
+  --color-trust-green-bg: #DCFCE7;
+  --color-trust-green-fg: #16A34A;
+  --color-trust-purple-bg: #EDE9FE;
+  --color-trust-purple-fg: #7C3AED;
+  --color-trust-orange-bg: #FFEDD5;
+  --color-trust-orange-fg: #F97316;
+  --color-trust-blue-bg: #DBEAFE;
+  --color-trust-blue-fg: #2563EB;
+  --color-error: #DC2626;
+  --color-error-bg: #FEF2F2;
+  --radius-card: 24px;
+  --radius-input: 10px;
+  --radius-pill: 999px;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .auth-page-shell {
+    @apply w-full;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-primary-start) 12%, white) 0%,
+      color-mix(in srgb, var(--color-brand) 10%, white) 50%,
+      color-mix(in srgb, var(--color-icon-blue-bg) 35%, white) 100%
+    );
+  }
+
+  .auth-top-strip {
+    background: linear-gradient(
+      90deg,
+      var(--color-primary-mid) 0%,
+      var(--color-brand) 30%,
+      var(--color-icon-blue-fg) 60%,
+      var(--color-primary-end) 100%
+    );
+  }
+
+  .auth-card-surface {
+    @apply rounded-card border border-gray-100/50 bg-white shadow-xl overflow-hidden;
+  }
+
+  .auth-info-panel {
+    @apply rounded-card border border-gray-100 bg-white/80 shadow-sm backdrop-blur-sm;
+  }
+
+  .auth-link {
+    @apply font-semibold underline;
+    color: var(--color-brand);
+  }
+
+  .auth-link:hover {
+    color: var(--color-primary-end);
+  }
+
+  .auth-muted-link {
+    @apply text-sm font-semibold;
+    color: var(--color-brand);
+  }
+
+  .auth-muted-link:hover {
+    color: var(--color-primary-end);
+  }
+
+  .auth-input-base {
+    @apply h-[48px] w-full rounded-input border bg-white text-sm text-gray-900 placeholder-gray-400 transition-all duration-200 outline-none;
+  }
+
+  .auth-button-primary {
+    background: linear-gradient(
+      90deg,
+      var(--color-primary-end) 0%,
+      var(--color-brand) 50%,
+      var(--color-icon-blue-fg) 100%
+    );
+  }
+
+  .auth-icon-badge {
+    @apply rounded-full flex items-center justify-center shrink-0;
+    background-color: color-mix(in srgb, var(--color-brand) 12%, white);
+    color: var(--color-brand);
+  }
+
+  .auth-blob-purple {
+    background-color: color-mix(in srgb, var(--color-brand) 18%, white);
+  }
+
+  .auth-blob-pink {
+    background-color: color-mix(in srgb, var(--color-primary-end) 18%, white);
+  }
+}
