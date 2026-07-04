@@ -15,23 +15,23 @@ const SOCIAL_PROVIDERS: Record<
 > = {
   facebook: {
     icon: FaFacebookF,
-    color: "text-blue-600",
-    hoverBg: "hover:bg-blue-50",
+    color: "text-[#D2A55B]",
+    hoverBg: "hover:bg-[#1A120D]",
   },
   twitter: {
     icon: FaTwitter,
-    color: "text-sky-500",
-    hoverBg: "hover:bg-sky-50",
+    color: "text-[#D8B06A]",
+    hoverBg: "hover:bg-[#1A120D]",
   },
   instagram: {
     icon: FaInstagram,
-    color: "text-pink-500",
-    hoverBg: "hover:bg-pink-50",
+    color: "text-[#F2C878]",
+    hoverBg: "hover:bg-[#1A120D]",
   },
   github: {
     icon: FaGithub,
-    color: "text-gray-800",
-    hoverBg: "hover:bg-gray-100",
+    color: "text-[#E7E2DA]",
+    hoverBg: "hover:bg-[#1A120D]",
   },
 };
 

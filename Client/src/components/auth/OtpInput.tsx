@@ -112,8 +112,8 @@ const OtpInput: React.FC<OtpInputProps> = ({
                       error
                         ? "border-red-400 bg-red-50/50 focus:border-red-500 focus:ring-2 focus:ring-red-100"
                         : value[index]
-                          ? "border-violet-400 bg-violet-50/30 focus:border-violet-600 focus:ring-2 focus:ring-violet-200"
-                          : "border-gray-200 bg-white focus:border-violet-600 focus:ring-2 focus:ring-violet-200"
+                          ? "border-[#D8B06A] bg-[#1A120D]/60 focus:border-[#F2C878] focus:ring-2 focus:ring-[#D8B06A]/20"
+                          : "border-[#B98A43]/40 bg-[#120D0A] focus:border-[#D8B06A] focus:ring-2 focus:ring-[#D8B06A]/20"
                     }
                   `}
                   aria-label={`Digit ${index + 1}`}

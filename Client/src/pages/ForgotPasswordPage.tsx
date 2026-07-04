@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Lock, Send } from "lucide-react";
+import { Mail, Lock } from "lucide-react";
 import AuthLayout from "../components/auth/AuthLayout";
 import LeftMarketingPanel from "../components/auth/LeftMarketingPanel";
 import RightAuthCard from "../components/auth/RightAuthCard";
 import GradientText from "../components/auth/GradientText";
 import SocialAuthButton from "../components/auth/SocialAuthButton";
-import InfoPanel from "../components/auth/InfoPanel";
+
 import FormField from "../form/FormField";
 import GradientButton from "../form/GradientButton";
 import Divider from "../form/Divider";
@@ -46,11 +46,10 @@ const ForgotPasswordPage: React.FC = () => {
         <LeftMarketingPanel
           title={
             <>
-              <GradientText className="italic">Reset</GradientText> Your
-              Password
+              <GradientText className="italic">Reset</GradientText> Your <GradientText>Password</GradientText>
             </>
           }
-          subtitle="No worries! Enter your email address and we'll send you a link to reset your password."
+          subtitle="No worries! Enter your email address and we'll send you an OTP to reset your password."
           illustration={<PadlockIllustration />}
         />
       }
@@ -87,7 +86,7 @@ const ForgotPasswordPage: React.FC = () => {
 
             <Divider text="or" />
 
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               <SocialAuthButton provider="google" />
               <SocialAuthButton provider="apple" />
             </div>
@@ -101,15 +100,6 @@ const ForgotPasswordPage: React.FC = () => {
             </p>
           </form>
         </RightAuthCard>
-      }
-      bottomPanel={
-        mutation.isSuccess ? (
-          <InfoPanel
-            icon={Send}
-            title="Check Your Inbox"
-            description="We've sent a password reset link to your email. Please check your inbox and spam folder."
-          />
-        ) : undefined
       }
     />
   );

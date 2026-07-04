@@ -1,4 +1,4 @@
-import { axiosInstance } from "../axiosInstance";
+import axiosInstance from "../axiosInstance";
 import { AUTH_ENDPOINTS } from "../endpoints";
 import type {
   SignInPayload,
@@ -11,166 +11,189 @@ import type {
   ResendOtpResponse,
 } from "../../types/auth";
 
-// --- Mock delay helper ---
-const mockDelay = (ms = 1500): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
-// --- Mock implementations for demo ---
-const mockSignIn = async (payload: SignInPayload): Promise<AuthResponse> => {
-  await mockDelay();
-
-  if (payload.email === "error@test.com") {
-    const error = {
-      response: {
-        status: 401,
-        data: {
-          message: "Invalid email or password",
-          errors: { email: "No account found with this email" },
-        },
-      },
-      isAxiosError: true,
-    };
-    throw error;
+/**
+ * Sign up user with email and password
+ */
+export const signUp = async (payload: SignUpPayload): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(
+      AUTH_ENDPOINTS.SIGN_UP,
+      payload
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Sign up failed" };
   }
-
-  return {
-    user: {
-      id: "1",
-      firstName: "John",
-      lastName: "Doe",
-      email: payload.email,
-    },
-    token: "mock-jwt-token-" + Date.now(),
-    message: "Successfully signed in!",
-  };
 };
 
-const mockSignUp = async (payload: SignUpPayload): Promise<AuthResponse> => {
-  await mockDelay();
-
-  if (payload.email === "exists@test.com") {
-    const error = {
-      response: {
-        status: 409,
-        data: {
-          message: "Email already in use",
-          errors: { email: "An account with this email already exists" },
-        },
-      },
-      isAxiosError: true,
-    };
-    throw error;
+/**
+ * Verify email with OTP
+ */
+export const verifyEmail = async (payload: VerifyOtpPayload): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(
+      AUTH_ENDPOINTS.VERIFY_EMAIL,
+      payload
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Email verification failed" };
   }
-
-  return {
-    user: {
-      id: "2",
-      firstName: payload.firstName,
-      lastName: payload.lastName,
-      email: payload.email,
-      phone: payload.phone,
-    },
-    token: "mock-jwt-token-" + Date.now(),
-    message: "Account created successfully!",
-  };
 };
 
-const mockForgotPassword = async (
-  payload: ForgotPasswordPayload
-): Promise<ForgotPasswordResponse> => {
-  await mockDelay();
-
-  if (payload.email === "notfound@test.com") {
-    const error = {
-      response: {
-        status: 404,
-        data: {
-          message: "No account found with this email address",
-          errors: { email: "This email is not registered" },
-        },
-      },
-      isAxiosError: true,
-    };
-    throw error;
+/**
+ * Resend OTP to email
+ */
+export const resendOTP = async (email: string): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(
+      AUTH_ENDPOINTS.RESEND_OTP,
+      { email }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Failed to resend OTP" };
   }
-
-  return {
-    message: "Password reset link sent to your email!",
-    success: true,
-  };
 };
 
-const mockVerifyOtp = async (
-  payload: VerifyOtpPayload
-): Promise<VerifyOtpResponse> => {
-  await mockDelay();
-
-  if (payload.code === "000000") {
-    const error = {
-      response: {
-        status: 400,
-        data: {
-          message: "Invalid or expired OTP code",
-        },
-      },
-      isAxiosError: true,
-    };
-    throw error;
+/**
+ * Sign in user with email and password
+ */
+export const signIn = async (payload: SignInPayload): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(
+      AUTH_ENDPOINTS.SIGN_IN,
+      payload
+    );
+    
+    // Store token in localStorage
+    if (response.data.data?.accessToken) {
+      localStorage.setItem("accessToken", response.data.data.accessToken);
+    }
+    
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Sign in failed" };
   }
-
-  return {
-    message: "Account verified successfully!",
-    success: true,
-    token: "verified-token-" + Date.now(),
-  };
 };
 
-const mockResendOtp = async (_email: string): Promise<ResendOtpResponse> => {
-  await mockDelay(1000);
-  return {
-    message: "A new OTP code has been sent to your email",
-    success: true,
-  };
+/**
+ * Forgot password - request reset email
+ */
+export const forgotPassword = async (payload: ForgotPasswordPayload): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(
+      AUTH_ENDPOINTS.FORGOT_PASSWORD,
+      payload
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Failed to send reset email" };
+  }
 };
 
-// --- Determine if we should use mocks ---
-const USE_MOCKS = !import.meta.env.VITE_API_BASE_URL;
+/**
+ * Verify reset token
+ */
+export const verifyResetOTP = async (payload: VerifyOtpPayload): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(
+      AUTH_ENDPOINTS.VERIFY_RESET_OTP,
+      payload
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Invalid reset OTP" };
+  }
+};
 
-export const authService = {
-  signIn: (payload: SignInPayload): Promise<AuthResponse> =>
-    USE_MOCKS
-      ? mockSignIn(payload)
-      : axiosInstance
-          .post<AuthResponse>(AUTH_ENDPOINTS.SIGN_IN, payload)
-          .then((r) => r.data),
+/**
+ * Reset password with OTP
+ */
+export const resetPassword = async (payload: {
+  email: string;
+  otp: string;
+  password: string;
+  confirmPassword?: string;
+}): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(
+      AUTH_ENDPOINTS.RESET_PASSWORD,
+      {
+        email: payload.email,
+        otp: payload.otp,
+        password: payload.password,
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Password reset failed" };
+  }
+};
 
-  signUp: (payload: SignUpPayload): Promise<AuthResponse> =>
-    USE_MOCKS
-      ? mockSignUp(payload)
-      : axiosInstance
-          .post<AuthResponse>(AUTH_ENDPOINTS.SIGN_UP, payload)
-          .then((r) => r.data),
+/**
+ * Google OAuth sign in/sign up
+ */
+export const googleAuth = async (idToken: string): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(
+      AUTH_ENDPOINTS.GOOGLE_AUTH,
+      { idToken }
+    );
 
-  forgotPassword: (
-    payload: ForgotPasswordPayload
-  ): Promise<ForgotPasswordResponse> =>
-    USE_MOCKS
-      ? mockForgotPassword(payload)
-      : axiosInstance
-          .post<ForgotPasswordResponse>(AUTH_ENDPOINTS.FORGOT_PASSWORD, payload)
-          .then((r) => r.data),
+    // Store token in localStorage
+    if (response.data.data?.accessToken) {
+      localStorage.setItem("accessToken", response.data.data.accessToken);
+    }
 
-  verifyOtp: (payload: VerifyOtpPayload): Promise<VerifyOtpResponse> =>
-    USE_MOCKS
-      ? mockVerifyOtp(payload)
-      : axiosInstance
-          .post<VerifyOtpResponse>(AUTH_ENDPOINTS.VERIFY_OTP, payload)
-          .then((r) => r.data),
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Google auth failed" };
+  }
+};
 
-  resendOtp: (email: string): Promise<ResendOtpResponse> =>
-    USE_MOCKS
-      ? mockResendOtp(email)
-      : axiosInstance
-          .post<ResendOtpResponse>(AUTH_ENDPOINTS.RESEND_OTP, { email })
-          .then((r) => r.data),
+/**
+ * Refresh access token
+ */
+export const refreshAccessToken = async (): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(AUTH_ENDPOINTS.REFRESH_TOKEN);
+    
+    // Update stored token
+    if (response.data.data?.accessToken) {
+      localStorage.setItem("accessToken", response.data.data.accessToken);
+    }
+
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || { message: "Token refresh failed" };
+  }
+};
+
+/**
+ * Logout user
+ */
+export const logout = async (): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(AUTH_ENDPOINTS.LOGOUT);
+    localStorage.removeItem("accessToken");
+    return response.data;
+  } catch (error: any) {
+    // Clear token anyway
+    localStorage.removeItem("accessToken");
+    throw error.response?.data || { message: "Logout failed" };
+  }
+};
+
+export default {
+  signUp,
+  verifyEmail,
+  resendOTP,
+  signIn,
+  forgotPassword,
+  verifyResetOTP,
+  resetPassword,
+  googleAuth,
+  refreshAccessToken,
+  logout,
 };

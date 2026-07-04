@@ -6,12 +6,14 @@ export const signUpSchema = z
       .string()
       .trim()
       .min(2, "First name must be at least 2 characters")
-      .max(50, "First name must be at most 50 characters"),
+      .max(50, "First name must be at most 50 characters")
+      .regex(/^[A-Za-z]+$/, "First name must contain only letters"),
     lastName: z
       .string()
       .trim()
       .min(2, "Last name must be at least 2 characters")
-      .max(50, "Last name must be at most 50 characters"),
+      .max(50, "Last name must be at most 50 characters")
+      .regex(/^[A-Za-z]+$/, "Last name must contain only letters"),
     email: z
       .string()
       .trim()
@@ -20,8 +22,9 @@ export const signUpSchema = z
     phone: z
       .string()
       .trim()
-      .min(1, "Phone number is required")
-      .regex(/^\+?[0-9]{7,15}$/, "Enter a valid phone number"),
+      .min(11, "Phone number must be at least 11 digits")
+      .max(15, "Phone number must be at most 15 digits")
+      .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")

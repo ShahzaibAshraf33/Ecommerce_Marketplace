@@ -2,26 +2,26 @@
 
 @theme {
   --font-sans: 'Inter', sans-serif;
-  --color-primary-start: #6D28D9;
-  --color-primary-mid: #A855F7;
-  --color-primary-end: #DB2777;
-  --color-brand: #7C3AED;
-  --color-icon-purple-bg: #EDE9FE;
-  --color-icon-purple-fg: #7C3AED;
-  --color-icon-blue-bg: #DBEAFE;
-  --color-icon-blue-fg: #2563EB;
-  --color-icon-pink-bg: #FCE7F3;
-  --color-icon-pink-fg: #DB2777;
-  --color-icon-orange-bg: #FFEDD5;
-  --color-icon-orange-fg: #F97316;
-  --color-trust-green-bg: #DCFCE7;
-  --color-trust-green-fg: #16A34A;
-  --color-trust-purple-bg: #EDE9FE;
-  --color-trust-purple-fg: #7C3AED;
-  --color-trust-orange-bg: #FFEDD5;
-  --color-trust-orange-fg: #F97316;
-  --color-trust-blue-bg: #DBEAFE;
-  --color-trust-blue-fg: #2563EB;
+  --color-primary-start: #050505;
+  --color-primary-mid: #1A120D;
+  --color-primary-end: #8A5A2B;
+  --color-brand: #D8B06A;
+  --color-icon-purple-bg: #1A120D;
+  --color-icon-purple-fg: #D2A55B;
+  --color-icon-blue-bg: #1A120D;
+  --color-icon-blue-fg: #D2A55B;
+  --color-icon-pink-bg: #1A120D;
+  --color-icon-pink-fg: #F2C878;
+  --color-icon-orange-bg: #1A120D;
+  --color-icon-orange-fg: #D2A55B;
+  --color-trust-green-bg: #1A120D;
+  --color-trust-green-fg: #D8B06A;
+  --color-trust-purple-bg: #1A120D;
+  --color-trust-purple-fg: #D8B06A;
+  --color-trust-orange-bg: #1A120D;
+  --color-trust-orange-fg: #D2A55B;
+  --color-trust-blue-bg: #1A120D;
+  --color-trust-blue-fg: #D2A55B;
   --color-error: #DC2626;
   --color-error-bg: #FEF2F2;
   --radius-card: 24px;
@@ -40,6 +40,24 @@
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background:
+      radial-gradient(
+        circle at 78% 38%,
+        rgba(190, 130, 70, 0.45) 0%,
+        rgba(120, 70, 30, 0.22) 22%,
+        transparent 55%
+      ),
+      linear-gradient(
+        110deg,
+        #050505 0%,
+        #0B0908 28%,
+        #1A120D 58%,
+        #4D2E16 100%
+      );
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 100vh;
+    color: #E7E2DA;
   }
 }
 
@@ -49,74 +67,103 @@
     min-height: 100dvh;
     overflow-x: hidden;
     overflow-y: auto;
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--color-primary-start) 12%, white) 0%,
-      color-mix(in srgb, var(--color-brand) 10%, white) 50%,
-      color-mix(in srgb, var(--color-icon-blue-bg) 35%, white) 100%
-    );
+    background:
+      radial-gradient(
+        circle at 78% 38%,
+        rgba(190, 130, 70, 0.45) 0%,
+        rgba(120, 70, 30, 0.22) 22%,
+        transparent 55%
+      ),
+      linear-gradient(
+        110deg,
+        #050505 0%,
+        #0B0908 28%,
+        #1A120D 58%,
+        #4D2E16 100%
+      );
+    background-size: cover;
   }
 
   .auth-top-strip {
     background: linear-gradient(
       90deg,
-      var(--color-primary-mid) 0%,
-      var(--color-brand) 30%,
-      var(--color-icon-blue-fg) 60%,
-      var(--color-primary-end) 100%
+      #050505 0%,
+      #1A120D 28%,
+      #4D2E16 60%,
+      #8A5A2B 100%
     );
   }
 
   .auth-card-surface {
-    @apply rounded-card border border-gray-100/50 bg-white shadow-xl overflow-hidden;
+    @apply rounded-card border border-[#B98A43]/40 bg-[#120D0A]/80 shadow-xl overflow-hidden backdrop-blur-sm;
   }
 
   .auth-info-panel {
-    @apply rounded-card border border-gray-100 bg-white/80 shadow-sm backdrop-blur-sm;
+    @apply rounded-card border border-[#B98A43]/30 bg-[#1A120D]/70 shadow-sm backdrop-blur-sm;
   }
 
   .auth-link {
     @apply font-semibold underline;
-    color: var(--color-brand);
+    color: #D8B06A;
   }
 
   .auth-link:hover {
-    color: var(--color-primary-end);
+    color: #F3D8A0;
   }
 
   .auth-muted-link {
     @apply text-sm font-semibold;
-    color: var(--color-brand);
+    color: #D8B06A;
   }
 
   .auth-muted-link:hover {
-    color: var(--color-primary-end);
+    color: #F3D8A0;
   }
 
   .auth-input-base {
-    @apply h-[48px] w-full rounded-input border bg-white text-sm text-gray-900 placeholder-gray-400 transition-all duration-200 outline-none;
+    @apply h-[48px] w-full rounded-input border bg-[#16110D] text-sm text-[#E7E2DA] placeholder-[#E7E2DA]/70 transition-all duration-200 outline-none;
+    border-color: rgba(185, 138, 67, 0.35);
   }
 
   .auth-button-primary {
     background: linear-gradient(
       90deg,
-      var(--color-primary-end) 0%,
-      var(--color-brand) 50%,
-      var(--color-icon-blue-fg) 100%
+      #8A5A2B 0%,
+      #D8B06A 50%,
+      #F3D8A0 100%
     );
+    color: #050505;
   }
 
   .auth-icon-badge {
     @apply rounded-full flex items-center justify-center shrink-0;
-    background-color: color-mix(in srgb, var(--color-brand) 12%, white);
-    color: var(--color-brand);
+    background-color: rgba(210, 165, 91, 0.16);
+    color: #D2A55B;
   }
 
   .auth-blob-purple {
-    background-color: color-mix(in srgb, var(--color-brand) 18%, white);
+    background-color: rgba(216, 176, 106, 0.16);
   }
 
   .auth-blob-pink {
-    background-color: color-mix(in srgb, var(--color-primary-end) 18%, white);
+    background-color: rgba(185, 119, 45, 0.18);
+  }
+
+  .hero-title {
+    background: linear-gradient(180deg, #F3D8A0 0%, #D8B06A 45%, #B8863B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    color: #E7E2DA;
+  }
+
+  .hero-divider {
+    background: #B98A43;
+  }
+
+  .hero-accent-glow {
+    box-shadow: 0 0 80px rgba(185, 119, 45, 0.45);
   }
 }

@@ -1,25 +1,34 @@
-import React, { useCallback } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Send, Edit2, Lock, Shield } from "lucide-react";
+import { Mail, Send, Lock } from "lucide-react";
 import AuthLayout from "../components/auth/AuthLayout";
 import LeftMarketingPanel from "../components/auth/LeftMarketingPanel";
 import RightAuthCard from "../components/auth/RightAuthCard";
 import GradientText from "../components/auth/GradientText";
 import OtpInput from "../components/auth/OtpInput";
-import InfoBanner from "../components/auth/InfoBanner";
+
 import GradientButton from "../form/GradientButton";
 import Divider from "../form/Divider";
 import EnvelopeIllustration from "../components/auth/illustrations/EnvelopeIllustration";
 import { otpSchema, type OtpFormInputValues } from "../schemas/otpSchema";
-import { useVerifyOtpMutation, useResendOtpMutation } from "../hooks/useVerifyOtpMutation";
+import { useVerifyOtpMutation, useResendOtpMutation, type VerifyOtpMode } from "../hooks/useVerifyOtpMutation";
 import { useCountdown } from "../hooks/useCountdown";
 import { useAppSelector } from "../app/hooks";
 import { selectPendingEmail } from "../features/auth/authSelectors";
 
 const VerifyOtpPage: React.FC = () => {
-  const pendingEmail = useAppSelector(selectPendingEmail) || "john.doe@example.com";
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const pendingEmail = useAppSelector(selectPendingEmail);
+  const mode: VerifyOtpMode = searchParams.get("mode") === "reset" ? "reset" : "verify";
+
+  useEffect(() => {
+    if (mode === "reset" && !pendingEmail) {
+      navigate("/forgot-password", { replace: true });
+    }
+  }, [mode, pendingEmail, navigate]);
 
   const {
     control,
@@ -34,16 +43,16 @@ const VerifyOtpPage: React.FC = () => {
     },
   });
 
-  const verifyMutation = useVerifyOtpMutation();
+  const verifyMutation = useVerifyOtpMutation(mode);
   const resendMutation = useResendOtpMutation();
 
   const expiryCountdown = useCountdown({
-    initialSeconds: 299, // 4:59
+    initialSeconds: 59, // 0:59
     autoStart: true,
   });
 
   const resendCountdown = useCountdown({
-    initialSeconds: 45,
+    initialSeconds: 59,
     autoStart: true,
   });
 
@@ -52,7 +61,7 @@ const VerifyOtpPage: React.FC = () => {
     const code = Array.isArray(data.code) ? data.code.join("") : data.code;
     verifyMutation.mutate({
       email: pendingEmail,
-      code: code as string,
+      otp: code as string,
     });
   };
 
@@ -60,8 +69,8 @@ const VerifyOtpPage: React.FC = () => {
     if (resendCountdown.isComplete) {
       resendMutation.mutate(pendingEmail, {
         onSuccess: () => {
-          resendCountdown.reset(45);
-          expiryCountdown.reset(299);
+          resendCountdown.reset(59);
+          expiryCountdown.reset(59);
         },
       });
     }
@@ -73,11 +82,14 @@ const VerifyOtpPage: React.FC = () => {
         <LeftMarketingPanel
           title={
             <>
-              <GradientText className="italic">Verify</GradientText> Your
-              Account
+              <GradientText className="italic">Verify</GradientText> Your <GradientText>Account</GradientText>
             </>
           }
-          subtitle={`Enter the 6-digit code we sent to ${pendingEmail} to reset your password.`}
+          subtitle={
+            mode === "reset"
+              ? `Enter the 6-digit code we sent to ${pendingEmail ?? "your email"} to reset your password.`
+              : `Enter the 6-digit code we sent to ${pendingEmail ?? "your email"} to verify your account.`
+          }
           illustration={<EnvelopeIllustration />}
         />
       }
@@ -149,18 +161,6 @@ const VerifyOtpPage: React.FC = () => {
                   </span>
                 )}
               </button>
-
-              {/* Use different email */}
-              <Link
-                to="/forgot-password"
-                className="w-full flex items-center gap-3 p-3.5 rounded-xl border border-gray-200
-                  hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
-              >
-                <Edit2 size={18} className="text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">
-                  Use a different email
-                </span>
-              </Link>
             </div>
 
             <div className="flex items-center justify-center gap-2 mt-5 text-xs text-gray-400">
@@ -169,13 +169,6 @@ const VerifyOtpPage: React.FC = () => {
             </div>
           </form>
         </RightAuthCard>
-      }
-      bottomPanel={
-        <InfoBanner
-          icon={Shield}
-          title="Haven't received the code?"
-          description="Please check your spam folder or promotions tab. If you still don't see it, you can resend the code."
-        />
       }
     />
   );

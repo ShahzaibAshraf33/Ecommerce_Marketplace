@@ -10,16 +10,16 @@ interface InfoBannerProps {
 const QuestionEnvelopeIllustration: React.FC = () => (
   <div className="relative w-24 h-20">
     {/* Envelope */}
-    <div className="absolute bottom-0 right-0 w-16 h-12 bg-gradient-to-br from-blue-100 to-violet-100 rounded-lg border border-blue-200/50 flex items-center justify-center">
-      <div className="w-0 h-0 border-l-[20px] border-r-[20px] border-t-[12px] border-l-transparent border-r-transparent border-t-blue-300/60 -mt-6" />
+    <div className="absolute bottom-0 right-0 w-16 h-12 bg-gradient-to-br from-[#2A1D12] to-[#4D2E16] rounded-lg border border-[#B98A43]/40 flex items-center justify-center">
+      <div className="w-0 h-0 border-l-[20px] border-r-[20px] border-t-[12px] border-l-transparent border-r-transparent border-t-[#D2A55B]/70 -mt-6" />
     </div>
     {/* Question mark */}
-    <div className="absolute top-0 right-6 w-8 h-8 bg-violet-100 rounded-full flex items-center justify-center border border-violet-200/50">
-      <span className="text-sm font-bold text-violet-500">?</span>
+    <div className="absolute top-0 right-6 w-8 h-8 bg-[#1A120D] rounded-full flex items-center justify-center border border-[#B98A43]/40">
+      <span className="text-sm font-bold text-[#F2C878]">?</span>
     </div>
     {/* Paper plane */}
     <svg
-      className="absolute bottom-2 right-16 text-blue-300/60"
+      className="absolute bottom-2 right-16 text-[#D2A55B]/70"
       width="20"
       height="20"
       viewBox="0 0 24 24"
@@ -56,8 +56,8 @@ const InfoBanner: React.FC<InfoBannerProps> = ({
     <div className="w-full bg-white/80 backdrop-blur-sm rounded-2xl p-5 mt-4 border border-gray-100 shadow-sm">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-4 flex-1">
-          <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center shrink-0">
-            <Icon size={18} className="text-violet-600" />
+          <div className="w-10 h-10 rounded-full bg-[#1A120D] flex items-center justify-center shrink-0">
+            <Icon size={18} className="text-[#D8B06A]" />
           </div>
           <div>
             <h4 className="text-sm font-bold text-gray-900">{title}</h4>

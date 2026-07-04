@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../api/services/authService";
+import { signIn } from "../api/services/authService";
 import { useAppDispatch } from "../app/hooks";
 import { setUser } from "../features/auth/authSlice";
 import { showSuccessToast, showErrorToast, getErrorMessage, getFieldErrors } from "../lib/toast";
@@ -13,7 +13,7 @@ export const useSignInMutation = (setError: UseFormSetError<SignInFormValues>) =
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (payload: SignInPayload) => authService.signIn(payload),
+    mutationFn: (payload: SignInPayload) => signIn(payload),
     onSuccess: (data) => {
       dispatch(setUser({ user: data.user, token: data.token }));
       if (data.user.email) {

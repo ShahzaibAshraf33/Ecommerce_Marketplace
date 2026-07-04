@@ -8,7 +8,6 @@ import LeftMarketingPanel from "../components/auth/LeftMarketingPanel";
 import RightAuthCard from "../components/auth/RightAuthCard";
 import GradientText from "../components/auth/GradientText";
 import SocialAuthButton from "../components/auth/SocialAuthButton";
-import SocialIconButton from "../components/auth/SocialIconButton";
 import FormField from "../form/FormField";
 import PasswordField from "../form/PasswordField";
 import Checkbox from "../form/Checkbox";
@@ -55,7 +54,7 @@ const SignInPage: React.FC = () => {
         <LeftMarketingPanel
           title={
             <>
-              <GradientText>Welcome</GradientText> Back to Marketo.
+              <GradientText>Welcome</GradientText> Back to <GradientText>Zylo Market.</GradientText>
             </>
           }
           subtitle="Sign in to continue your journey and explore millions of premium products across all categories."
@@ -64,28 +63,15 @@ const SignInPage: React.FC = () => {
       }
       rightCard={
         <RightAuthCard
+          className="max-w-md"
           title={
             <>
               <GradientText>Welcome</GradientText> Back
             </>
           }
-          subtitle={
-            <p>
-              Don&apos;t have an account?{" "}
-              <Link to="/sign-up" className="auth-link">
-
-                Sign Up
-              </Link>
-            </p>
-          }
         >
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div className="space-y-3">
-              <SocialAuthButton provider="google" />
-              <SocialAuthButton provider="apple" />
-            </div>
 
-            <Divider text="or sign in with email" />
 
             <div className="space-y-4">
               <FormField
@@ -120,14 +106,19 @@ const SignInPage: React.FC = () => {
               </GradientButton>
             </div>
 
-            <Divider text="or sign in with" />
+            <Divider text="or continue with" />
 
-            <div className="flex justify-center gap-3">
-              <SocialIconButton provider="facebook" />
-              <SocialIconButton provider="twitter" />
-              <SocialIconButton provider="instagram" />
-              <SocialIconButton provider="github" />
+            <div className="grid grid-cols-2 gap-3 mt-6 mb-6">
+              <SocialAuthButton provider="google" />
+              <SocialAuthButton provider="apple" />
             </div>
+
+            <p className="text-center text-sm text-gray-500 mt-8">
+              Don&apos;t have an account?{" "}
+              <Link to="/sign-up" className="auth-link">
+                Sign Up
+              </Link>
+            </p>
           </form>
         </RightAuthCard>
       }

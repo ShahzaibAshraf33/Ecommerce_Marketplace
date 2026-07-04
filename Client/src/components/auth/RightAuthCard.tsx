@@ -6,6 +6,7 @@ interface RightAuthCardProps {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
   children: React.ReactNode;
+  className?: string;
 }
 
 const RightAuthCard: React.FC<RightAuthCardProps> = ({
@@ -13,9 +14,10 @@ const RightAuthCard: React.FC<RightAuthCardProps> = ({
   title,
   subtitle,
   children,
+  className = "max-w-lg",
 }) => {
   return (
-    <div className="relative w-full max-w-md">
+    <div className={`relative w-full ${className}`}>
       {/* Decorative blurred blobs */}
       <div
         className="absolute -top-10 -right-10 w-40 h-40 auth-blob-purple rounded-full blur-3xl"
@@ -29,16 +31,16 @@ const RightAuthCard: React.FC<RightAuthCardProps> = ({
       <div className="relative auth-card-surface p-6 sm:p-7">
         {Icon && (
           <div className="flex justify-center mb-5">
-            <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center">
-              <Icon size={24} className="text-gray-600" />
+            <div className="w-14 h-14 rounded-2xl bg-[#1A120D] border border-[#B98A43]/30 flex items-center justify-center">
+              <Icon size={24} className="text-[#D8B06A]" />
             </div>
           </div>
         )}
 
         <div className="text-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+          <h2 className="text-2xl font-bold text-[#E7E2DA]">{title}</h2>
           {subtitle && (
-            <div className="mt-2 text-sm text-gray-500">{subtitle}</div>
+            <div className="mt-2 text-sm text-[#E7E2DA]/80">{subtitle}</div>
           )}
         </div>
 

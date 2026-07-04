@@ -15,29 +15,29 @@ const AUTH_FEATURES: Feature[] = [
     icon: Shield,
     title: "Secure & Safe",
     description: "Your data is 100% secure with enterprise-grade protection.",
-    bgColor: "bg-[#EDE9FE]",
-    fgColor: "text-[#7C3AED]",
+    bgColor: "bg-[#1A120D]",
+    fgColor: "text-[#D2A55B]",
   },
   {
     icon: Tag,
     title: "Best Deals",
     description: "Get access to exclusive offers and member-only discounts.",
-    bgColor: "bg-[#DBEAFE]",
-    fgColor: "text-[#2563EB]",
+    bgColor: "bg-[#1A120D]",
+    fgColor: "text-[#D8B06A]",
   },
   {
     icon: Heart,
     title: "Wishlist",
     description: "Save your favorite items and shop anytime you want.",
-    bgColor: "bg-[#FCE7F3]",
-    fgColor: "text-[#DB2777]",
+    bgColor: "bg-[#1A120D]",
+    fgColor: "text-[#F2C878]",
   },
   {
     icon: Truck,
     title: "Fast Delivery",
     description: "Enjoy fast and reliable delivery at your doorstep.",
-    bgColor: "bg-[#FFEDD5]",
-    fgColor: "text-[#F97316]",
+    bgColor: "bg-[#1A120D]",
+    fgColor: "text-[#D2A55B]",
   },
 ];
 
@@ -52,7 +52,7 @@ const FeatureList: React.FC = () => {
             <feature.icon size={18} className={feature.fgColor} />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-gray-900">
+            <h4 className="text-sm font-bold text-[#E7E2DA]">
               {feature.title}
             </h4>
             <p className="text-xs text-gray-500 leading-relaxed mt-0.5">

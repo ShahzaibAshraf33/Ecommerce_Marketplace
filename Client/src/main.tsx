@@ -9,6 +9,8 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import VerifyOtpPage from "./pages/VerifyOtpPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import MarketplacePage from "./pages/MarketplacePage";
 import "./styles/tokens.css";
 
 const queryClient = new QueryClient({
@@ -34,6 +36,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/sign-up" element={<SignUpPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/verify-otp" element={<VerifyOtpPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/marketplace" element={<MarketplacePage />} />
             <Route path="*" element={<Navigate to="/sign-in" replace />} />
           </Routes>
           <Toaster

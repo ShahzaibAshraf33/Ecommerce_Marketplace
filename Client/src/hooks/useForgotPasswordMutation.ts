@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "../api/services/authService";
+import { useNavigate } from "react-router-dom";
+import { forgotPassword } from "../api/services/authService";
 import { useAppDispatch } from "../app/hooks";
 import { setPendingEmail } from "../features/auth/authSlice";
 import { showSuccessToast, showErrorToast, getErrorMessage, getFieldErrors } from "../lib/toast";
@@ -11,13 +12,15 @@ export const useForgotPasswordMutation = (
   setError: UseFormSetError<ForgotPasswordFormValues>
 ) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: (payload: ForgotPasswordPayload) =>
-      authService.forgotPassword(payload),
+      forgotPassword(payload),
     onSuccess: (data, variables) => {
       dispatch(setPendingEmail(variables.email));
-      showSuccessToast(data.message || "Reset link sent!");
+      showSuccessToast(data.message || "Reset OTP sent!");
+      navigate("/verify-otp?mode=reset");
     },
     onError: (error: unknown) => {
       showErrorToast(getErrorMessage(error));

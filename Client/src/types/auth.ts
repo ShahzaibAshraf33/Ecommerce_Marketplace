@@ -1,32 +1,35 @@
 export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
+  id: number;
+  name: string;
   email: string;
-  phone?: string;
-  avatar?: string;
+  phoneNumber: string;
+  emailVerified: boolean;
+  googleId?: string;
+  profileImage?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AuthResponse {
-  user: User;
-  token: string;
+  success: boolean;
   message: string;
+  data: {
+    user: User;
+    accessToken: string;
+    isNewUser?: boolean;
+  };
 }
 
 export interface SignInPayload {
   email: string;
   password: string;
-  rememberMe?: boolean;
 }
 
 export interface SignUpPayload {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   password: string;
-  confirmPassword: string;
-  agreeToTerms: boolean;
 }
 
 export interface ForgotPasswordPayload {
@@ -40,13 +43,30 @@ export interface ForgotPasswordResponse {
 
 export interface VerifyOtpPayload {
   email: string;
-  code: string;
+  otp: string;
+}
+
+export interface ResetPasswordPayload {
+  email: string;
+  otp: string;
+  password: string;
+  confirmPassword?: string;
 }
 
 export interface VerifyOtpResponse {
   message: string;
   success: boolean;
-  token?: string;
+  data?: {
+    id: number;
+    email: string;
+    emailVerified: boolean;
+  };
+}
+
+export interface ResendOtpResponse {
+  message: string;
+  success: boolean;
+  expiresAt?: string;
 }
 
 export interface ResendOtpResponse {

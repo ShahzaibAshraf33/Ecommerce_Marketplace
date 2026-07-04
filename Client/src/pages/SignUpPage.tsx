@@ -8,7 +8,6 @@ import LeftMarketingPanel from "../components/auth/LeftMarketingPanel";
 import RightAuthCard from "../components/auth/RightAuthCard";
 import GradientText from "../components/auth/GradientText";
 import SocialAuthButton from "../components/auth/SocialAuthButton";
-import SocialIconButton from "../components/auth/SocialIconButton";
 import FormField from "../form/FormField";
 import PasswordField from "../form/PasswordField";
 import Checkbox from "../form/Checkbox";
@@ -43,13 +42,10 @@ const SignUpPage: React.FC = () => {
 
   const onSubmit = (data: SignUpFormValues) => {
     mutation.mutate({
-      firstName: data.firstName,
-      lastName: data.lastName,
+      name: `${data.firstName.trim()} ${data.lastName.trim()}`,
       email: data.email,
-      phone: data.phone,
+      phoneNumber: data.phone,
       password: data.password,
-      confirmPassword: data.confirmPassword,
-      agreeToTerms: data.agreeToTerms,
     });
   };
 
@@ -59,7 +55,7 @@ const SignUpPage: React.FC = () => {
         <LeftMarketingPanel
           title={
             <>
-              <GradientText className="italic">Join</GradientText> Marketo.
+              <GradientText className="italic">Join</GradientText> <GradientText>Zylo Market.</GradientText>
             </>
           }
           subtitle="Create your account and explore millions of premium products across all categories."
@@ -68,28 +64,15 @@ const SignUpPage: React.FC = () => {
       }
       rightCard={
         <RightAuthCard
+          className="max-w-2xl"
           title={
             <>
               <GradientText>Create Your</GradientText> Account
             </>
           }
-          subtitle={
-            <p>
-              Already have an account?{" "}
-              <Link to="/sign-in" className="auth-link">
-
-                Sign In
-              </Link>
-            </p>
-          }
         >
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div className="space-y-3">
-              <SocialAuthButton provider="google" />
-              <SocialAuthButton provider="apple" />
-            </div>
 
-            <Divider text="or sign up with email" />
 
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
@@ -109,37 +92,41 @@ const SignUpPage: React.FC = () => {
                 />
               </div>
 
-              <FormField
-                {...register("email")}
-                type="email"
-                icon={Mail}
-                placeholder="Email Address"
-                error={errors.email?.message}
-                autoComplete="email"
-              />
+              <div className="grid grid-cols-2 gap-3">
+                <FormField
+                  {...register("email")}
+                  type="email"
+                  icon={Mail}
+                  placeholder="Email Address"
+                  error={errors.email?.message}
+                  autoComplete="email"
+                />
 
-              <FormField
-                {...register("phone")}
-                type="tel"
-                icon={Phone}
-                placeholder="Phone Number"
-                error={errors.phone?.message}
-                autoComplete="tel"
-              />
+                <FormField
+                  {...register("phone")}
+                  type="tel"
+                  icon={Phone}
+                  placeholder="Phone Number"
+                  error={errors.phone?.message}
+                  autoComplete="tel"
+                />
+              </div>
 
-              <PasswordField
-                {...register("password")}
-                placeholder="Password"
-                error={errors.password?.message}
-                autoComplete="new-password"
-              />
+              <div className="grid grid-cols-2 gap-3">
+                <PasswordField
+                  {...register("password")}
+                  placeholder="Password"
+                  error={errors.password?.message}
+                  autoComplete="new-password"
+                />
 
-              <PasswordField
-                {...register("confirmPassword")}
-                placeholder="Confirm Password"
-                error={errors.confirmPassword?.message}
-                autoComplete="new-password"
-              />
+                <PasswordField
+                  {...register("confirmPassword")}
+                  placeholder="Confirm Password"
+                  error={errors.confirmPassword?.message}
+                  autoComplete="new-password"
+                />
+              </div>
 
               <Checkbox
                 {...register("agreeToTerms")}
@@ -148,7 +135,7 @@ const SignUpPage: React.FC = () => {
                     I agree to the{" "}
                     <Link
                       to="#"
-                      className="text-violet-600 hover:text-violet-700 underline font-medium"
+                      className="text-[#D8B06A] hover:text-[#F3D8A0] underline font-medium"
                       onClick={(e) => e.stopPropagation()}
                     >
                       Terms of Service
@@ -156,7 +143,7 @@ const SignUpPage: React.FC = () => {
                     and{" "}
                     <Link
                       to="#"
-                      className="text-violet-600 hover:text-violet-700 underline font-medium"
+                      className="text-[#D8B06A] hover:text-[#F3D8A0] underline font-medium"
                       onClick={(e) => e.stopPropagation()}
                     >
                       Privacy Policy
@@ -171,14 +158,19 @@ const SignUpPage: React.FC = () => {
               </GradientButton>
             </div>
 
-            <Divider text="or sign up with" />
+            <Divider text="or continue with" />
 
-            <div className="flex justify-center gap-3">
-              <SocialIconButton provider="facebook" />
-              <SocialIconButton provider="twitter" />
-              <SocialIconButton provider="instagram" />
-              <SocialIconButton provider="github" />
+            <div className="grid grid-cols-2 gap-3 mt-6 mb-6">
+              <SocialAuthButton provider="google" />
+              <SocialAuthButton provider="apple" />
             </div>
+
+            <p className="text-center text-sm text-gray-500 mt-8">
+              Already have an account?{" "}
+              <Link to="/sign-in" className="auth-link">
+                Sign In
+              </Link>
+            </p>
           </form>
         </RightAuthCard>
       }

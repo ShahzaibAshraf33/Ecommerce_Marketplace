@@ -8,6 +8,7 @@ interface AuthState {
   token: string | null;
   status: AuthStatus;
   pendingEmail: string | null;
+  pendingResetOtp: string | null;
 }
 
 const initialState: AuthState = {
@@ -15,6 +16,7 @@ const initialState: AuthState = {
   token: localStorage.getItem("token"),
   status: localStorage.getItem("token") ? "authenticated" : "idle",
   pendingEmail: null,
+  pendingResetOtp: null,
 };
 
 const authSlice = createSlice({
@@ -30,14 +32,22 @@ const authSlice = createSlice({
     setPendingEmail(state, action: PayloadAction<string>) {
       state.pendingEmail = action.payload;
     },
+    setPendingResetOtp(state, action: PayloadAction<string>) {
+      state.pendingResetOtp = action.payload;
+    },
     clearPendingEmail(state) {
       state.pendingEmail = null;
+      state.pendingResetOtp = null;
+    },
+    clearPendingResetOtp(state) {
+      state.pendingResetOtp = null;
     },
     logout(state) {
       state.user = null;
       state.token = null;
       state.status = "idle";
       state.pendingEmail = null;
+      state.pendingResetOtp = null;
       localStorage.removeItem("token");
     },
     setStatus(state, action: PayloadAction<AuthStatus>) {
@@ -46,6 +56,13 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, setPendingEmail, clearPendingEmail, logout, setStatus } =
-  authSlice.actions;
+export const {
+  setUser,
+  setPendingEmail,
+  setPendingResetOtp,
+  clearPendingEmail,
+  clearPendingResetOtp,
+  logout,
+  setStatus,
+} = authSlice.actions;
 export default authSlice.reducer;
