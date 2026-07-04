@@ -1,80 +1,96 @@
-const OTP = require("../models/otp.model");
-const { generateOTP } = require("../services/otp.service");
+const { verifyOTP, resendOTP, generateAndSendOTP } = require("../services/otpService");
+const ApiError = require("../utils/ApiError");
+const prisma = require("../config/prisma");
 
-const sendOTP = async (req, res) => {
+/**
+ * Verify OTP for email confirmation
+ */
+const verifyOTPController = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, otp } = req.body;
 
-    const otp = generateOTP();
+    // Find user by email
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
-    await OTP.findOneAndUpdate(
-      { email },
-      {
-        otp,
-        expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 min
-      },
-      {
-        upsert: true,
-        new: true,
-      }
-    );
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
-    // TODO: Send OTP via Email/SMS
+    // Verify OTP
+    const result = await verifyOTP(user.id, otp);
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "OTP sent successfully",
+      message: result.message,
+      data: {
+        id: user.id,
+        email: user.email,
+        emailVerified: true,
+      },
     });
   } catch (error) {
+    if (error instanceof ApiError) {
+      return res.status(error.statusCode).json({
+        success: false,
+        message: error.message,
+      });
+    }
+    console.error("OTP Verification Error:", error.message);
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Internal Server Error",
     });
   }
 };
 
-const verifyOTP = async (req, res) => {
+/**
+ * Resend OTP to user email
+ */
+const resendOTPController = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    const { email } = req.body;
 
-    const otpRecord = await OTP.findOne({ email });
+    // Find user by email
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
-    if (!otpRecord) {
+    if (!user) {
       return res.status(404).json({
         success: false,
-        message: "OTP not found",
+        message: "User not found",
       });
     }
 
-    if (otpRecord.expiresAt < new Date()) {
-      return res.status(400).json({
-        success: false,
-        message: "OTP expired",
-      });
-    }
+    // Resend OTP
+    const result = await resendOTP(user.id, email, user.name);
 
-    if (otpRecord.otp !== otp) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid OTP",
-      });
-    }
-
-    await OTP.deleteOne({ email });
-
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "OTP verified successfully",
+      message: result.message,
+      expiresAt: result.expiresAt,
     });
   } catch (error) {
+    if (error instanceof ApiError) {
+      return res.status(error.statusCode).json({
+        success: false,
+        message: error.message,
+      });
+    }
+    console.error("Resend OTP Error:", error.message);
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Internal Server Error",
     });
   }
 };
 
 module.exports = {
-  sendOTP,
-  verifyOTP,
+  verifyOTPController,
+  resendOTPController,
 };

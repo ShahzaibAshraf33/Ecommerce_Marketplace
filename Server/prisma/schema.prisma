@@ -8,10 +8,46 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  name        String
-  email       String   @unique
-  phoneNumber String   @unique
-  password    String
-  createdAt   DateTime @default(now())
+  id                    Int       @id @default(autoincrement())
+  name                  String
+  email                 String    @unique
+  phoneNumber           String    @unique
+  password              String?
+  emailVerified         Boolean   @default(false)
+  googleId              String?   @unique
+  profileImage          String?
+  lastPasswordChangeAt  DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @default(now()) @updatedAt
+
+  // Relations
+  otps                  OTP[]
+  forgotPasswordTokens  ForgotPasswordToken[]
+}
+
+model OTP {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  code      String
+  attempts  Int       @default(0)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model ForgotPasswordToken {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  token     String    @unique
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([expiresAt])
 }

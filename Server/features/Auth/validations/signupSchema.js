@@ -3,16 +3,20 @@ const { z } = require("zod");
 const signupSchema = z.object({
   name: z
     .string()
-    .min(3, "Name must be at least 3 characters"),
+    .trim()
+    .min(3, "Name must be at least 3 characters")
+    .regex(/^[A-Za-z ]+$/, "Name must contain only letters"),
 
   email: z
     .string()
+    .trim()
     .email("Invalid email"),
 
   phoneNumber: z
     .string()
-    .min(11, "Phone number must be 11 digits")
-    .max(11, "Phone number must be 11 digits")
+    .trim()
+    .min(11, "Phone number must be at least 11 digits")
+    .max(15, "Phone number must be at most 15 digits")
     .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
 
   password: z
